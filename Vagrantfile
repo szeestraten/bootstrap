@@ -1,5 +1,5 @@
 Vagrant.configure(2) do |config|
-  config.vm.define "box" do |box|
+  config.vm.define "localhost" do |box|
     # Recommended Ubuntu 16.04 Vagrant box
     box.vm.box = "bento/ubuntu-16.04"
 
