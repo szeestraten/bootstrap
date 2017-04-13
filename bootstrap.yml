@@ -1,0 +1,42 @@
+---
+  - hosts: all
+    connection: local
+
+    tasks:
+    - name: Get configuration repositories
+      git:
+        repo: "{{ item.url }}"
+        dest: "{{ ansible_env.HOME }}/{{ item.dest }}"
+        accept_hostkey: yes
+      with_items:
+        - { url: 'ssh://git@github.com/szeestraten/.gitconfig.git',   dest: '.config/gitconfig' }
+        - { url: 'ssh://git@github.com/szeestraten/.vim.git',         dest: '.vim' }
+        - { url: 'ssh://git@github.com/szeestraten/.terminator.git',  dest: '.config/terminator' }
+        - { url: 'https://github.com/magicmonty/bash-git-prompt.git', dest: '.config/bash-git-prompt' }
+        - { url: 'https://github.com/seebi/dircolors-solarized.git',  dest: '.config/dir_colors' }
+
+    - name: Create symlinks to configuration files
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ ansible_env.HOME }}/{{ item.dest }}"
+        state: link
+      with_items:
+        - { src: '.config/gitconfig/.gitconfig', dest: '.gitconfig' }
+        - { src: '.vim/vimrc',                   dest: '.vimrc' }
+
+    - name: Enable color prompt in .bashrc
+      lineinfile:
+        dest: "{{ ansible_env.HOME }}/.bashrc"
+        regexp: '^#force_color_prompt=yes'
+        line: 'force_color_prompt=yes'
+        backrefs: yes
+
+    - name: Add custom block in .bashrc
+      blockinfile:
+        dest: "{{ ansible_env.HOME }}/.bashrc"
+        block: |
+          GIT_PROMPT_ONLY_IN_REPO=1
+          GIT_PROMPT_THEME=Solarized
+          source ~/.config/bash-git-prompt/gitprompt.sh
+          eval `dircolors ~/.config/dir_colors/dircolors.ansi-universal`
+        marker: "# {mark} ANSIBLE MANAGED BLOCK"
