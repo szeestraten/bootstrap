@@ -11,6 +11,7 @@
       with_items:
         - { url: 'ssh://git@github.com/szeestraten/.gitconfig.git',   dest: '.config/gitconfig' }
         - { url: 'ssh://git@github.com/szeestraten/.vim.git',         dest: '.vim' }
+        - { url: 'ssh://git@github.com/szeestraten/.tmux.git',        dest: '.config/tmux' }
         - { url: 'ssh://git@github.com/szeestraten/.terminator.git',  dest: '.config/terminator' }
         - { url: 'https://github.com/magicmonty/bash-git-prompt.git', dest: '.config/bash-git-prompt' }
         - { url: 'https://github.com/seebi/dircolors-solarized.git',  dest: '.config/dir_colors' }
@@ -22,6 +23,7 @@
         state: link
       with_items:
         - { src: '.config/gitconfig/.gitconfig', dest: '.gitconfig' }
+        - { src: '.config/tmux/.tmux.conf',      dest: '.tmux.conf' }
         - { src: '.vim/vimrc',                   dest: '.vimrc' }
 
     - name: Enable color prompt in .bashrc
@@ -40,3 +42,4 @@
           source ~/.config/bash-git-prompt/gitprompt.sh
           eval `dircolors ~/.config/dir_colors/dircolors.ansi-universal`
         marker: "# {mark} ANSIBLE MANAGED BLOCK"
+
