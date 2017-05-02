@@ -18,12 +18,12 @@
 
     - name: Create symlinks to configuration files
       file:
-        src: "{{ item.src }}"
+        src: "{{ ansible_env.HOME }}/{{ item.src }}"
         dest: "{{ ansible_env.HOME }}/{{ item.dest }}"
         state: link
       with_items:
         - { src: '.config/gitconfig/.gitconfig', dest: '.gitconfig' }
-        - { src: '.config/tmux/.tmux.conf',      dest: '.tmux.conf' }
+        - { src: '.config/tmux/.tmux.conf',      dest: '.byobu/.tmux.conf' }
         - { src: '.vim/vimrc',                   dest: '.vimrc' }
 
     - name: Enable color prompt in .bashrc
